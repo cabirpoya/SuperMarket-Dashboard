@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperMarket Pro - Advanced Retail Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .sidebar-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .chart-container {
+            height: 300px;
+        }
+        @media (max-width: 768px) {
+            .mobile-hidden {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-store text-2xl"></i>
+                <span class="text-xl font-bold">SuperMarket Pro</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#" class="hover:text-gray-200">Dashboard</a>
+                <a href="#" class="hover:text-gray-200">Inventory</a>
+                <a href="#" class="hover:text-gray-200">Sales</a>
+                <a href="#" class="hover:text-gray-200">Customers</a>
+                <a href="#" class="hover:text-gray-200">Reports</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <i class="fas fa-bell text-xl cursor-pointer"></i>
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                </div>
+                <div class="flex items-center space-x-2 cursor-pointer">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="h-8 w-8 rounded-full">
+                    <span class="hidden md:inline">Admin</span>
+                </div>
+                <button class="md:hidden text-xl" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="gradient-bg text-white hidden py-2 px-4" id="mobileMenu">
+        <div class="flex flex-col space-y-2">
+            <a href="#" class="block py-2 hover:bg-blue-700 px-2 rounded">Dashboard</a>
+            <a href="#" class="block py-2 hover:bg-blue-700 px-2 rounded">Inventory</a>
+            <a href="#" class="block py-2 hover:bg-blue-700 px-2 rounded">Sales</a>
+            <a href="#" class="block py-2 hover:bg-blue-700 px-2 rounded">Customers</a>
+            <a href="#" class="block py-2 hover:bg-blue-700 px-2 rounded">Reports</a>
+        </div>
+    </div>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="gradient-bg text-white w-64 min-h-screen mobile-hidden">
+            <div class="p-4">
+                <div class="flex items-center space-x-3 mb-8">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="h-10 w-10 rounded-full">
+                    <div>
+                        <p class="font-semibold">Admin User</p>
+                        <p class="text-xs text-blue-200">Super Admin</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-1">
+                    <div class="sidebar-item rounded-lg p-3 cursor-pointer flex items-center space-x-3 bg-blue-700">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="sidebar-item rounded-lg p-3 cursor-pointer flex items-center space-x-3">
+                        <i class="fas fa-boxes"></i>
+                        <span>Inventory</span>
+                    </div>
+                    <div class="sidebar-item rounded-lg p-3 cursor-pointer flex items-center space-x-3">
+                        <i class="fas fa-cash-register"></i>
+                        <span>POS System</span>
+                    </div>
+                    <div class="sidebar-item rounded-lg p-3 cursor-pointer flex items-center space-x-3">
+                        <i class="fas fa-users"></i>
+                        <span>Customers</span>
+                    </div>
+                    <div class="sidebar-item rounded-lg p-3 cursor-pointer flex items-center space-x-3">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </div>
+                    <div class="sidebar-item rounded-lg p-3 cursor-pointer flex items-center space-x-3">
+                        <i class="fas fa-truck"></i>
+                        <span>Suppliers</span>
+                    </div>
+                    <div class="sidebar-item rounded-lg p-3 cursor-pointer flex items-center space-x-3">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Employees</span>
+                    </div>
+                    <div class="sidebar-item rounded-lg p-3 cursor-pointer flex items-center space-x-3">
+                        <i class="fas fa-tags"></i>
+                        <span>Promotions</span>
+                    </div>
+                    <div class="sidebar-item rounded-lg p-3 cursor-pointer flex items-center space-x-3">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">SuperMarket Management Dashboard</h1>
+            
+            <!-- Overview Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="dashboard-card bg-white rounded-lg shadow-md p-6 transition duration-300">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-gray-500">Today's Sales</p>
+                            <p class="text-2xl font-bold">$12,450</p>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <i class="fas fa-shopping-cart text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-green-600">
+                        <i class="fas fa-arrow-up"></i> 12% from yesterday
+                    </div>
+                </div>
+                
+                <div class="dashboard-card bg-white rounded-lg shadow-md p-6 transition duration-300">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-gray-500">Inventory Items</p>
+                            <p class="text-2xl font-bold">1,245</p>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <i class="fas fa-boxes text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-red-600">
+                        <i class="fas fa-arrow-down"></i> 5 items low in stock
+                    </div>
+                </div>
+                
+                <div class="dashboard-card bg-white rounded-lg shadow-md p-6 transition duration-300">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-gray-500">New Customers</p>
+                            <p class="text-2xl font-bold">48</p>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i class="fas fa-user-plus text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-green-600">
+                        <i class="fas fa-arrow-up"></i> 8% from last week
+                    </div>
+                </div>
+                
+                <div class="dashboard-card bg-white rounded-lg shadow-md p-6 transition duration-300">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-gray-500">Employee Activity</p>
+                            <p class="text-2xl font-bold">82%</p>
+                        </div>
+                        <div class="bg-yellow-100 p-3 rounded-full">
+                            <i class="fas fa-users text-yellow-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600">
+                        <i class="fas fa-info-circle"></i> 3 employees on break
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">Sales Overview</h2>
+                        <select class="border rounded px-2 py-1 text-sm">
+                            <option>Last 7 Days</option>
+                            <option>Last 30 Days</option>
+                            <option>This Month</option>
+                            <option selected>Last Month</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">Top Selling Products</h2>
+                        <select class="border rounded px-2 py-1 text-sm">
+                            <option>Today</option>
+                            <option selected>This Week</option>
+                            <option>This Month</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="productsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity and Low Stock -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-lg font-semibold mb-4">Recent Transactions</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-blue-100 p-2 rounded-full">
+                                    <i class="fas fa-receipt text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">#INV-2023-0567</p>
+                                    <p class="text-sm text-gray-500">12 items • $245.50</p>
+                                </div>
+                            </div>
+                            <span class="text-sm text-gray-500">2 min ago</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-green-100 p-2 rounded-full">
+                                    <i class="fas fa-receipt text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">#INV-2023-0566</p>
+                                    <p class="text-sm text-gray-500">8 items • $189.25</p>
+                                </div>
+                            </div>
+                            <span class="text-sm text-gray-500">15 min ago</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-purple-100 p-2 rounded-full">
+                                    <i class="fas fa-receipt text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">#INV-2023-0565</p>
+                                    <p class="text-sm text-gray-500">5 items • $112.75</p>
+                                </div>
+                            </div>
+                            <span class="text-sm text-gray-500">32 min ago</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-yellow-100 p-2 rounded-full">
+                                    <i class="fas fa-receipt text-yellow-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">#INV-2023-0564</p>
+                                    <p class="text-sm text-gray-500">3 items • $78.40</p>
+                                </div>
+                            </div>
+                            <span class="text-sm text-gray-500">1 hour ago</span>
+                        </div>
+                    </div>
+                    <button class="mt-4 text-blue-600 text-sm font-medium">View All Transactions →</button>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-lg font-semibold mb-4">Low Stock Items</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://via.placeholder.com/40" alt="Product" class="h-10 w-10 rounded">
+                                <div>
+                                    <p class="font-medium">Organic Milk (1L)</p>
+                                    <p class="text-sm text-gray-500">Dairy • SKU: MILK-ORG-001</p>
+                                </div>
+                            </div>
+                            <span class="text-red-600 font-medium">3 left</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://via.placeholder.com/40" alt="Product" class="h-10 w-10 rounded">
+                                <div>
+                                    <p class="font-medium">Whole Wheat Bread</p>
+                                    <p class="text-sm text-gray-500">Bakery • SKU: BREAD-WW-005</p>
+                                </div>
+                            </div>
+                            <span class="text-red-600 font-medium">5 left</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://via.placeholder.com/40" alt="Product" class="h-10 w-10 rounded">
+                                <div>
+                                    <p class="font-medium">Free Range Eggs (12)</p>
+                                    <p class="text-sm text-gray-500">Dairy • SKU: EGG-FR-012</p>
+                                </div>
+                            </div>
+                            <span class="text-yellow-600 font-medium">8 left</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://via.placeholder.com/40" alt="Product" class="h-10 w-10 rounded">
+                                <div>
+                                    <p class="font-medium">Bananas (1kg)</p>
+                                    <p class="text-sm text-gray-500">Produce • SKU: FRUIT-BAN-001</p>
+                                </div>
+                            </div>
+                            <span class="text-yellow-600 font-medium">9 left</span>
+                        </div>
+                    </div>
+                    <button class="mt-4 text-blue-600 text-sm font-medium">View All Inventory →</button>
+                </div>
+            </div>
+            
+            <!-- Key Features Section -->
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Key Features of SuperMarket Pro</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
+                        <div class="bg-blue-100 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i class="fas fa-barcode text-blue-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2">Accurate Inventory Tracking</h3>
+                        <p class="text-gray-600">Real-time inventory updates with barcode scanning to prevent stockouts and overstocking.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
+                        <div class="bg-green-100 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i class="fas fa-mobile-alt text-green-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2">Mobile POS System</h3>
+                        <p class="text-gray-600">Process transactions anywhere in the store with tablet-based POS for faster checkout.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
+                        <div class="bg-purple-100 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i class="fas fa-cloud text-purple-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2">Cloud-Based Management</h3>
+                        <p class="text-gray-600">Access your supermarket data from anywhere with secure cloud storage and backup.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
+                        <div class="bg-yellow-100 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i class="fas fa-chart-pie text-yellow-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2">Advanced Analytics</h3>
+                        <p class="text-gray-600">Comprehensive reports and dashboards to identify sales trends and optimize operations.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
+                        <div class="bg-red-100 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i class="fas fa-tags text-red-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2">Promotion Management</h3>
+                        <p class="text-gray-600">Create and manage discounts, bundles, and loyalty programs to boost sales.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
+                        <div class="bg-indigo-100 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i class="fas fa-users-cog text-indigo-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2">Employee Management</h3>
+                        <p class="text-gray-600">Track employee performance, schedules, and permissions for better workforce management.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">SuperMarket Pro</h3>
+                    <p class="text-gray-400">Advanced retail management system designed to streamline supermarket operations and boost profitability.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Dashboard</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Inventory</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">POS System</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Reports</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">API Reference</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Community</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i> 123 Retail Street, Business City</li>
+                        <li class="text-gray-400"><i class="fas fa-phone mr-2"></i> +1 (555) 123-4567</li>
+                        <li class="text-gray-400"><i class="fas fa-envelope mr-2"></i> support@supermarketpro.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                <p>© 2023 SuperMarket Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Sales Chart
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(salesCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Sales',
+                    data: [8500, 10200, 9800, 12450],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            drawBorder: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Products Chart
+        const productsCtx = document.getElementById('productsChart').getContext('2d');
+        const productsChart = new Chart(productsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Organic Milk', 'Whole Wheat Bread', 'Bananas', 'Free Range Eggs', 'Bottled Water'],
+                datasets: [{
+                    label: 'Units Sold',
+                    data: [245, 189, 156, 132, 120],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            drawBorder: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
